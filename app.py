@@ -1,5 +1,17 @@
+from pypdf import PdfReader
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+
+
+def extract_text_from_pdf(pdf_path):
+    reader = PdfReader(pdf_path)
+
+    text = ""
+
+    for page in reader.pages:
+        text += page.extract_text() or ""
+
+    return text
 
 
 def find_matching_skills(resume, job_description, skills):
@@ -44,9 +56,15 @@ def calculate_text_similarity(resume, job_description):
     return similarity[0][0] * 100
 
 
-resume = input("Enter your resume: ")
-job_description = input("Enter the job description: ")
+# Get resume PDF
+pdf_path = input("Enter resume PDF path: ")
 
+resume = extract_text_from_pdf(pdf_path)
+
+# Get job description
+job_description = input("\nEnter the job description: ")
+
+# Convert text to lowercase
 resume = resume.lower()
 job_description = job_description.lower()
 
@@ -82,6 +100,11 @@ text_similarity_score = calculate_text_similarity(
     job_description
 )
 
+combined_match_score = (
+    skill_match_score * 0.60
+    + text_similarity_score * 0.40
+)
+
 print("\nMatching skills:")
 print(matching_skills)
 
@@ -93,6 +116,9 @@ print(f"{skill_match_score:.2f}%")
 
 print("\nAI Text Similarity Score:")
 print(f"{text_similarity_score:.2f}%")
+
+print("\nCombined Resume Match Score:")
+print(f"{combined_match_score:.2f}%")
 
 print("\nRecommended skills to learn:")
 
