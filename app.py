@@ -1,35 +1,9 @@
-import re
-
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 from src.resume_parser import extract_text_from_pdf
 from src.text_preprocessing import clean_text
-
-
-def skill_exists(text, skill):
-    pattern = r"(?<!\w)" + re.escape(skill) + r"(?!\w)"
-    return re.search(pattern, text) is not None
-
-
-def find_matching_skills(resume, job_description, skills):
-    matching_skills = []
-
-    for skill in skills:
-        if skill_exists(resume, skill) and skill_exists(job_description, skill):
-            matching_skills.append(skill)
-
-    return matching_skills
-
-
-def find_missing_skills(resume, job_description, skills):
-    missing_skills = []
-
-    for skill in skills:
-        if skill_exists(job_description, skill) and not skill_exists(resume, skill):
-            missing_skills.append(skill)
-
-    return missing_skills
+from src.skill_extractor import find_matching_skills, find_missing_skills
 
 
 def calculate_match_score(matching_skills, missing_skills):
