@@ -1,21 +1,10 @@
 import re
 
-from pypdf import PdfReader
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
+from src.resume_parser import extract_text_from_pdf
 from src.text_preprocessing import clean_text
-
-
-def extract_text_from_pdf(pdf_path):
-    reader = PdfReader(pdf_path)
-
-    text = ""
-
-    for page in reader.pages:
-        text += page.extract_text() or ""
-
-    return text
 
 
 def skill_exists(text, skill):
@@ -69,6 +58,7 @@ def calculate_text_similarity(resume, job_description):
 pdf_path = input("Enter resume PDF path: ")
 
 resume = extract_text_from_pdf(pdf_path)
+
 
 # Get job description
 job_description = input("\nEnter the job description: ")
