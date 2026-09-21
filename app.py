@@ -1,3 +1,5 @@
+import re
+
 from pypdf import PdfReader
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -14,11 +16,16 @@ def extract_text_from_pdf(pdf_path):
     return text
 
 
+def skill_exists(text, skill):
+    pattern = r"(?<!\w)" + re.escape(skill) + r"(?!\w)"
+    return re.search(pattern, text) is not None
+
+
 def find_matching_skills(resume, job_description, skills):
     matching_skills = []
 
     for skill in skills:
-        if skill in resume and skill in job_description:
+        if skill_exists(resume, skill) and skill_exists(job_description, skill):
             matching_skills.append(skill)
 
     return matching_skills
@@ -28,7 +35,7 @@ def find_missing_skills(resume, job_description, skills):
     missing_skills = []
 
     for skill in skills:
-        if skill in job_description and skill not in resume:
+        if skill_exists(job_description, skill) and not skill_exists(resume, skill):
             missing_skills.append(skill)
 
     return missing_skills
@@ -68,43 +75,80 @@ job_description = input("\nEnter the job description: ")
 resume = resume.lower()
 job_description = job_description.lower()
 
+
+# Skills database
 skills = [
     "python",
     "sql",
+    "java",
+    "c",
+    "c++",
+    "javascript",
+    "html",
+    "css",
     "machine learning",
+    "deep learning",
+    "artificial intelligence",
+    "data science",
     "pandas",
     "numpy",
+    "matplotlib",
+    "scikit-learn",
     "tensorflow",
-    "aws"
+    "pytorch",
+    "aws",
+    "azure",
+    "google cloud",
+    "docker",
+    "git",
+    "linux",
+    "mongodb",
+    "mysql",
+    "postgresql",
+    "flask",
+    "django",
+    "streamlit"
 ]
 
+
+# Find matching skills
 matching_skills = find_matching_skills(
     resume,
     job_description,
     skills
 )
 
+
+# Find missing skills
 missing_skills = find_missing_skills(
     resume,
     job_description,
     skills
 )
 
+
+# Calculate skill match score
 skill_match_score = calculate_match_score(
     matching_skills,
     missing_skills
 )
 
+
+# Calculate AI text similarity
 text_similarity_score = calculate_text_similarity(
     resume,
     job_description
 )
 
+
+# Calculate combined score
 combined_match_score = (
     skill_match_score * 0.60
     + text_similarity_score * 0.40
 )
 
+
+# Display results
 print("\nMatching skills:")
 print(matching_skills)
 
@@ -120,6 +164,8 @@ print(f"{text_similarity_score:.2f}%")
 print("\nCombined Resume Match Score:")
 print(f"{combined_match_score:.2f}%")
 
+
+# Skill recommendations
 print("\nRecommended skills to learn:")
 
 for skill in missing_skills:
