@@ -4,6 +4,8 @@ from pypdf import PdfReader
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
+from src.text_preprocessing import clean_text
+
 
 def extract_text_from_pdf(pdf_path):
     reader = PdfReader(pdf_path)
@@ -71,9 +73,10 @@ resume = extract_text_from_pdf(pdf_path)
 # Get job description
 job_description = input("\nEnter the job description: ")
 
-# Convert text to lowercase
-resume = resume.lower()
-job_description = job_description.lower()
+
+# Clean resume and job description
+resume = clean_text(resume)
+job_description = clean_text(job_description)
 
 
 # Skills database
