@@ -1,13 +1,46 @@
+
 import re
+
+
+# Different names that can refer to the same skill.
+SKILL_ALIASES = {
+    "machine learning": ["machine learning", "ml"],
+    "ml": ["machine learning", "ml"],
+
+    "artificial intelligence": [
+        "artificial intelligence",
+        "ai",
+    ],
+    "ai": [
+        "artificial intelligence",
+        "ai",
+    ],
+
+    "scikit-learn": ["scikit-learn", "sklearn"],
+    "sklearn": ["scikit-learn", "sklearn"],
+
+    "c++": ["c++", "cpp"],
+    "cpp": ["c++", "cpp"],
+}
 
 
 def skill_exists(text, skill):
     text = text.lower()
     skill = skill.lower()
 
-    pattern = r"(?<!\w)" + re.escape(skill) + r"(?!\w)"
+    aliases = SKILL_ALIASES.get(skill, [skill])
 
-    return re.search(pattern, text) is not None
+    for alias in aliases:
+        pattern = (
+            r"(?<!\w)"
+            + re.escape(alias)
+            + r"(?!\w)"
+        )
+
+        if re.search(pattern, text):
+            return True
+
+    return False
 
 
 def find_matching_skills(resume, job_description, skills):
