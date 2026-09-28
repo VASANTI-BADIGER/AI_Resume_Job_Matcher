@@ -1,4 +1,3 @@
-
 from src.resume_parser import extract_text_from_pdf
 from src.text_preprocessing import clean_text
 from src.skill_extractor import find_matching_skills, find_missing_skills
@@ -59,10 +58,19 @@ def main():
         print(f"\nError: {error}")
         return
 
-    # Get job description
-    job_description = input(
-        "\nEnter the job description: "
-    ).strip()
+    # Get multiline job description
+    print("\nPaste the job description below.")
+    print("When finished, press Enter on an empty line.")
+
+    job_lines = []
+
+    while True:
+        line = input()
+        if not line.strip():
+            break
+        job_lines.append(line)
+
+    job_description = "\n".join(job_lines).strip()
 
     if not job_description:
         print("Error: Job description cannot be empty.")
