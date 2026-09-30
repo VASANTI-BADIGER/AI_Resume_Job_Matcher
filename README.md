@@ -1,130 +1,161 @@
+
 # AI Resume & Job Description Matcher
 
-A Python application that analyzes a resume against a job description. It identifies matching skills, missing skills, and calculates resume match scores using skill matching and text similarity.
+A Python-based application that analyzes a resume against a job description. It extracts text from PDF resumes, identifies matching and missing skills, and calculates similarity scores to help users understand how their resume aligns with a job.
+
+## Project Overview
+
+The AI Resume & Job Description Matcher is a beginner portfolio project built using Python and Streamlit.
+
+Users can upload a PDF resume and enter a job description. The application processes the text, checks for required skills, and displays matching skills, missing skills, recommendations, and similarity scores.
 
 ## Features
 
-* Extracts text from PDF resumes
-* Accepts multiline job descriptions
-* Identifies matching skills
-* Detects missing skills
-* Calculates skill match score
-* Calculates TF-IDF text similarity using cosine similarity
-* Calculates a combined resume match score
-* Recommends skills to learn
+- Upload resumes in PDF format.
+- Extract text from PDF files.
+- Clean and preprocess resume and job-description text.
+- Identify matching skills.
+- Identify missing skills.
+- Recommend skills to focus on developing.
+- Calculate a skill match score.
+- Calculate text similarity using TF-IDF and cosine similarity.
+- Display results through a Streamlit web interface.
+- Validate empty job descriptions.
 
 ## Technologies Used
 
-* Python
-* pypdf
-* Scikit-learn
-* TF-IDF
-* Cosine Similarity
-* Git
-* GitHub
-
-## How It Works
-
-1. Enter the path to a resume PDF.
-2. Paste the job description, including multiple lines.
-3. Press Enter on an empty line to finish the description.
-4. The application extracts and cleans the resume and job description text.
-5. It identifies matching and missing skills.
-6. It calculates skill match, text similarity, and combined scores.
-7. It recommends skills that are missing from the resume.
+- Python
+- Streamlit
+- Pandas and NumPy (if used in the current implementation)
+- scikit-learn
+- TF-IDF
+- Cosine Similarity
+- PDF text extraction
+- Git and GitHub
 
 ## Project Structure
 
 ```text
 AI-Resume-Job-Matcher/
+│
 ├── app.py
+├── web_app.py
+├── pdf_reader.py
 ├── requirements.txt
 ├── README.md
+│
 ├── src/
+│   ├── matcher.py
 │   ├── resume_parser.py
-│   ├── text_preprocessing.py
 │   ├── skill_extractor.py
-│   └── matcher.py
-└── tests/
+│   └── text_preprocessing.py
+│
+├── tests/
+├── resume.pdf
+└── test_resume.pdf
 ```
 
-## Installation
+## How It Works
 
-Clone the repository:
+1. **Resume Upload:** The user uploads a resume as a PDF file.
+2. **Text Extraction:** The application extracts readable text from the PDF.
+3. **Text Preprocessing:** The extracted resume text and job description are cleaned.
+4. **Skill Matching:** The application checks which required skills appear in the resume.
+5. **Missing Skills:** Required skills not found in the resume are identified.
+6. **Similarity Calculation:** TF-IDF and cosine similarity are used to compare the resume text and job description.
+7. **Results:** The application displays skill matches, missing skills, recommendations, and scores.
+
+## Installation and Setup
+
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/VASANTI-BADIGER/AI_Resume_Job_Matcher.git
+```
+
+### 2. Open the project folder
+
+```bash
 cd AI_Resume_Job_Matcher
 ```
 
-Create and activate a virtual environment:
+### 3. Create a virtual environment
 
 ```bash
 python3 -m venv venv
+```
+
+### 4. Activate the virtual environment
+
+On Linux or Ubuntu:
+
+```bash
 source venv/bin/activate
 ```
 
-Install dependencies:
+### 5. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## Run the Application
+### 6. Run the web application
 
 ```bash
-python app.py
+streamlit run web_app.py
 ```
 
-When prompted for the resume PDF path, enter:
+Open the local URL displayed in your terminal, usually:
 
 ```text
-test_resume.pdf
+http://localhost:8501
 ```
 
-For testing, use this sample job description:
+## How to Use
 
-```text
-Python Developer Fresher
-Required Skills:
-Python
-SQL
-Git
-Linux
-Pandas
-NumPy
-Machine Learning
-AWS
-```
+1. Open the application in your browser.
+2. Upload a PDF resume.
+3. Paste a job description into the text box.
+4. Click **Analyze Resume**.
+5. Review the matching skills, missing skills, recommendations, and scores.
 
-Press Enter on an empty line after the final line of the job description.
+## Matching Method
 
-## Scoring
+The application uses two types of comparison:
 
-The application calculates:
+- **Skill Match Score:** Measures how many of the listed required skills were found in the resume.
+- **Text Similarity Score:** Uses TF-IDF vectorization and cosine similarity to estimate how similar the resume and job-description text are.
 
-* Skill Match Score: based on skills found in both the resume and job description.
-* Text Similarity Score: based on TF-IDF and cosine similarity.
-* Combined Match Score: 60% skill match score and 40% text similarity score.
-
-These scores are indicators for comparing text, not guarantees of job suitability or hiring outcomes.
+The combined score uses a weighted calculation in the current implementation. These scores are simple text-based indicators, not a guarantee of job suitability or selection.
 
 ## Testing
 
-Run the unit tests with:
+The application was manually tested with:
 
-```bash
-python -m unittest discover -s tests -v
-```
+- A sample PDF resume.
+- A job description with several matching skills.
+- A changed job description with a smaller set of required skills.
+- An empty job description to check input validation.
+
+## Limitations
+
+- Skill matching depends on the skills included in the application's predefined list.
+- The application may not recognize equivalent skills written using different terms.
+- Text similarity measures textual overlap, not actual candidate ability.
+- PDF extraction quality depends on the PDF's text and formatting.
+- The application is a learning and portfolio project, not a validated recruitment system.
 
 ## Future Improvements
 
-* Support DOCX resumes
-* Expand the skill database
-* Improve skill extraction
-* Add a simple web interface
-* Allow users to download the match report
+- Add more skills and support skill synonyms.
+- Improve resume parsing and section detection.
+- Add downloadable analysis reports.
+- Improve the user interface.
+- Add more automated tests.
+- Explore semantic similarity methods.
 
 ## Author
 
-Vasanti Badiger
+**Vasanti Badiger**
+
+GitHub: [VASANTI-BADIGER](https://github.com/VASANTI-BADIGER)
